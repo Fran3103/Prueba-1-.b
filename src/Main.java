@@ -60,7 +60,10 @@ public class Main {
                     ContarActivas();
                     break;
                 case 7:
-                    ListarPorCurso();
+                    Scanner scanner7 = new Scanner(System.in);
+                    System.out.println("Ingrese el nombre del curso:");
+                    String cursoBuscado = scanner7.nextLine().trim();
+                    ListarPorCurso(cursoBuscado);
                     break;
 
                 case 8:
@@ -130,6 +133,9 @@ public class Main {
 
             static void Cancelar(int id) {
                 Inscripcion inscripcion = BuscarID(id);
+                if(inscripcion.getEstado().equals("Cancelada")){
+                    System.out.println("La inscripción ya está cancelada.");
+                }
                 if (inscripcion != null) {
                     inscripcion.setEstado("Cancelada");
                     System.out.println("Inscripción cancelada con éxito.");
@@ -138,10 +144,15 @@ public class Main {
 
             static void Reactivar(int id) {
                 Inscripcion inscripcion = BuscarID(id);
-                if (inscripcion != null) {
+                if(inscripcion.getEstado().equals("Activa")){
+                    System.out.println("La inscripción ya está activa.");
+                }
+                if (inscripcion != null && inscripcion.getEstado().equals("Cancelada")) {
                     inscripcion.setEstado("Activa");
                     System.out.println("Inscripción reactivada con éxito.");
-                }}
+                }
+
+            }
 
             static void ContarActivas(){
 
@@ -155,10 +166,12 @@ public class Main {
             }
 
 
-            static void ListarPorCurso(){
+            static void ListarPorCurso(String cursoBuscado){
 
         for (Inscripcion inscripcion : Alumnos) {
-                    System.out.println("Curso: " + inscripcion.getCurso() + ", Nombre: " + inscripcion.getAlumno());
+                    if (inscripcion.getCurso().equals(cursoBuscado)) {
+                        System.out.println("Curso: " + inscripcion.getCurso() + ", Nombre: " + inscripcion.getAlumno());
+                    }
                 }
             }
     }
